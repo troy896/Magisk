@@ -5,12 +5,15 @@ import com.topjohnwu.magisk.BR
 import com.topjohnwu.magisk.R
 import com.topjohnwu.magisk.core.model.su.SuLog
 import com.topjohnwu.magisk.core.utils.currentLocale
-import com.topjohnwu.magisk.databinding.ObservableItem
+import com.topjohnwu.magisk.databinding.ObservableDiffRvItem
+import com.topjohnwu.magisk.databinding.RvContainer
 import com.topjohnwu.magisk.databinding.set
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class LogRvItem(val item: SuLog) : ObservableItem<LogRvItem>() {
+class LogRvItem(
+    override val item: SuLog
+) : ObservableDiffRvItem<LogRvItem>(), RvContainer<SuLog> {
 
     companion object {
         val timeDateFormat = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)
@@ -30,14 +33,4 @@ class LogRvItem(val item: SuLog) : ObservableItem<LogRvItem>() {
         set(value) = set(value, field, { field = it }, BR.bottom)
 
     override fun itemSameAs(other: LogRvItem) = item.appName == other.item.appName
-
-    override fun contentSameAs(other: LogRvItem) = item.fromUid == other.item.fromUid &&
-            item.toUid == other.item.toUid &&
-            item.fromPid == other.item.fromPid &&
-            item.packageName == other.item.packageName &&
-            item.command == other.item.command &&
-            item.action == other.item.action &&
-            item.time == other.item.time &&
-            isTop == other.isTop &&
-            isBottom == other.isBottom
 }
