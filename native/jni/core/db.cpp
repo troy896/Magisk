@@ -7,7 +7,7 @@
 #include <socket.hpp>
 #include <utils.hpp>
 
-#define DB_VERSION 10
+#define DB_VERSION 11
 
 using namespace std;
 
