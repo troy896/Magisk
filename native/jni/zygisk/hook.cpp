@@ -404,7 +404,7 @@ void HookContext::nativeSpecializeAppProcess_pre() {
 
     // TODO: Handle MOUNT_EXTERNAL_NONE on older platforms
     if (args->mount_external != 0 && remote_check_hide(args->uid, process)) {
-        flags[HIDE_FLAG] = true;
+        g_ctx->flags[HIDE_FLAG] = true;
         ZLOGI("[%s] is on the hidelist\n", process);
     }
 
@@ -479,7 +479,7 @@ void HookContext::fork_pre() {
     g_ctx = this;
     sigmask(SIG_BLOCK, SIGCHLD);
     pid = old_fork();
-    if (flags[HIDE_FLAG]) {
+    if (g_ctx->flags[HIDE_FLAG]) {
         unload_zygisk();
     }
 }
