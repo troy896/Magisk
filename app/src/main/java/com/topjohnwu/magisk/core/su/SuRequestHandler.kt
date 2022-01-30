@@ -11,11 +11,11 @@ import com.topjohnwu.magisk.core.Const
 import com.topjohnwu.magisk.core.magiskdb.PolicyDao
 import com.topjohnwu.magisk.core.model.su.SuPolicy
 import com.topjohnwu.magisk.core.model.su.toPolicy
+import com.topjohnwu.magisk.ktx.now
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.io.*
-import java.time.Instant
-import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.SECONDS
 
 class SuRequestHandler(
@@ -94,11 +94,11 @@ class SuRequestHandler(
         }
     }
 
-    fun respond(action: Int, time: Long) {
+    fun respond(action: Int, time: Int) {
         val until = if (time > 0)
-            Instant.now().plus(time, ChronoUnit.MINUTES).epochSecond
+            TimeUnit.MILLISECONDS.toSeconds(now) + TimeUnit.MINUTES.toSeconds(time.toLong())
         else
-            time
+            time.toLong()
 
         policy.policy = action
         policy.until = until

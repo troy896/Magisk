@@ -6,10 +6,11 @@ import com.topjohnwu.magisk.core.model.su.SuPolicy
 import com.topjohnwu.magisk.core.model.su.toMap
 import com.topjohnwu.magisk.core.model.su.toPolicy
 import com.topjohnwu.magisk.di.AppContext
+import com.topjohnwu.magisk.ktx.now
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 
 class PolicyDao : BaseDao() {
@@ -20,7 +21,7 @@ class PolicyDao : BaseDao() {
         condition {
             greaterThan("until", "0")
             and {
-                lessThan("until", Instant.now().epochSecond.toString())
+                lessThan("until", TimeUnit.MILLISECONDS.toSeconds(now).toString())
             }
             or {
                 lessThan("until", "0")
