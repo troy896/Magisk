@@ -153,7 +153,7 @@ static bool validate(const char *pkg, const char *proc) {
 static void add_hide_set(const char *pkg, const char *proc) {
     LOGI("hide_list add: [%s/%s]\n", pkg, proc);
     hide_set->emplace(pkg, proc);
-    if (strcmp(pkg, ISOLATED_MAGIC) == 0) {
+    if (str_eql(pkg, ISOLATED_MAGIC)) {
         // Kill all matching isolated processes
         kill_process(proc, true, proc_name_match<&str_starts>);
     } else {
@@ -320,12 +320,13 @@ int launch_magiskhide(bool late_props) {
 
     LOGI("* Enable MagiskHide\n");
 
-    default_new(hide_set);
-    default_new(uid_proc_map);
-
     // Initialize the hide list
-    if (!init_list())
+    default_new(hide_set);
+    if (!init_list()) {
+        delete hide_set;
+        hide_set = nullptr;
         return DAEMON_ERROR;
+    }
 
     hide_sensitive_props();
     if (late_props)
@@ -336,6 +337,13 @@ int launch_magiskhide(bool late_props) {
         return DAEMON_ERROR;
 
     hide_state = true;
+    update_hide_config();
+
+    // Unlock here or else we'll be stuck in deadlock
+    lock.unlock();
+
+    default_new(uid_proc_map);
+    update_uid_map();
 
     inotify_fd = xinotify_init1(IN_CLOEXEC);
     if (inotify_fd >= 0) {
@@ -345,12 +353,6 @@ int launch_magiskhide(bool late_props) {
         register_poll(&inotify_pfd, inotify_handler);
     }
 
-    update_hide_config();
-
-    // Unlock here or else we'll be stuck in deadlock
-    lock.unlock();
-
-    update_uid_map();
     return DAEMON_SUCCESS;
 }
 

@@ -42,7 +42,7 @@ void hide_unmount(int pid = -1);
 void hide_sensitive_props();
 void hide_late_sensitive_props();
 
-extern int cached_manager_app_id;
+extern std::atomic<int> cached_manager_app_id;
 
 enum {
     LAUNCH_MAGISKHIDE,
