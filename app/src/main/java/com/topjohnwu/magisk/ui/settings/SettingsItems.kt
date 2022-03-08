@@ -212,8 +212,9 @@ object Zygisk : BaseSettingsItem.Toggle() {
         get() = Config.zygisk
         set(value) {
             Config.zygisk = value
-            Config.magiskHide = value
+            MagiskHide.isEnabled = value
             notifyPropertyChanged(BR.description)
+            MagiskHide.notifyPropertyChanged(BR.description)
         }
     val mismatch get() = value != Info.isZygiskEnabled
 }
@@ -225,8 +226,8 @@ object MagiskHide : BaseSettingsItem.Toggle() {
         set(value) {
             field = value
             val cmd = if (value) "enable" else "disable"
-            Shell.su("magiskhide $cmd").submit { cb ->
-                if (cb.isSuccess) {
+            Shell.su("magiskhide $cmd").submit { result ->
+                if (result.isSuccess) {
                     Config.magiskHide = value
                 } else {
                     field = !value
@@ -234,6 +235,7 @@ object MagiskHide : BaseSettingsItem.Toggle() {
                 }
             }
         }
+
     override fun refresh() {
         isEnabled = Zygisk.value
     }
