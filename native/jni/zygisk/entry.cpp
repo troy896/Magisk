@@ -10,8 +10,9 @@
 
 #include "zygisk.hpp"
 #include "module.hpp"
+#include "deny/deny.hpp"
 
-#include "../magiskhide/magiskhide.hpp"
+#include "magiskhide/magiskhide.hpp"
 
 using namespace std;
 
@@ -168,8 +169,37 @@ static int zygisk_log(int prio, const char *fmt, va_list ap) {
     return ret;
 }
 
+int remote_check_hide(int uid, const char *process) {
+    if (int fd = connect_daemon(); fd >= 0) {
+        write_int(fd, ZYGISK_REQUEST);
+        write_int(fd, ZYGISK_CHECK_HIDELIST);
+
+        int ret = -1;
+        if (read_int(fd) == 0) {
+            write_int(fd, uid);
+            write_string(fd, process);
+            ret = read_int(fd);
+        }
+        close(fd);
+        return ret >= 0 && ret;
+    }
+    return false;
+}
+
+int remote_request_hide() {
+    if (int fd = connect_daemon(); fd >= 0) {
+        write_int(fd, ZYGISK_REQUEST);
+        write_int(fd, ZYGISK_UNMOUNT);
+        int ret = read_int(fd);
+        close(fd);
+        return ret;
+    }
+    return DAEMON_ERROR;
+}
+
 static inline bool should_load_modules(uint32_t flags) {
-    return (flags & PROCESS_IS_MAGISK_APP) != PROCESS_IS_MAGISK_APP;
+    return (flags & UNMOUNT_MASK) != UNMOUNT_MASK &&
+           (flags & PROCESS_IS_MAGISK_APP) != PROCESS_IS_MAGISK_APP;
 }
 
 int remote_get_info(int uid, const char *process, uint32_t *flags, vector<int> &fds) {
@@ -332,21 +362,24 @@ static void get_process_info(int client, const sock_cred *cred) {
     // really want to cache the app ID value. inotify will invalidate the app ID
     // cache for us.
 
-    if (uid != 1000) {
-        int manager_app_id = cached_manager_app_id;
+    int manager_app_id = cached_manager_app_id;
 
-        if (manager_app_id < 0) {
-            manager_app_id = get_manager_app_id();
-            cached_manager_app_id = manager_app_id;
-        }
+    if (manager_app_id < 0) {
+        manager_app_id = get_manager_app_id();
+        cached_manager_app_id = manager_app_id;
+    }
 
-        if (to_app_id(uid) == manager_app_id) {
-            flags |= PROCESS_IS_MAGISK_APP;
-        }
-
-        if (uid_granted_root(uid)) {
-            flags |= PROCESS_GRANTED_ROOT;
-        }
+    if (to_app_id(uid) == manager_app_id) {
+        flags |= PROCESS_IS_MAGISK_APP;
+    }
+    if (denylist_enforced) {
+        flags |= DENYLIST_ENFORCING;
+    }
+    if (is_deny_target(uid, process)) {
+        flags |= PROCESS_ON_DENYLIST;
+    }
+    if (uid_granted_root(uid)) {
+        flags |= PROCESS_GRANTED_ROOT;
     }
 
     xwrite(client, &flags, sizeof(flags));
@@ -399,6 +432,17 @@ static void get_moddir(int client) {
     close(dfd);
 }
 
+static void check_uid_map(int client) {
+    if (!hide_enabled()) {
+        write_int(client, HIDE_NOT_ENABLED);
+        return;
+    }
+    write_int(client, 0);
+    int uid = read_int(client);
+    string process = read_string(client);
+    write_int(client, is_hide_target(uid, process));
+}
+
 void zygisk_handler(int client, const sock_cred *cred) {
     int code = read_int(client);
     char buf[256];
@@ -406,6 +450,15 @@ void zygisk_handler(int client, const sock_cred *cred) {
     case ZYGISK_SETUP:
         setup_files(client, cred);
         break;
+    case ZYGISK_CHECK_HIDELIST:
+        check_uid_map(client);
+        break;
+    case ZYGISK_UNMOUNT:
+        kill(cred->pid, SIGSTOP);
+        write_int(client, 0);
+        hide_daemon(cred->pid);
+        close(client);
+        return;
     case ZYGISK_PASSTHROUGH:
         magiskd_passthrough(client);
         break;

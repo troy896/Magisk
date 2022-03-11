@@ -11,6 +11,7 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.topjohnwu.magisk.R
+import com.topjohnwu.magisk.core.Config
 import com.topjohnwu.magisk.core.Const
 import com.topjohnwu.magisk.core.Info
 import com.topjohnwu.magisk.ktx.getBitmap
@@ -76,6 +77,18 @@ object Shortcuts {
                     .build()
             )
         }
+        if (Config.denyList) {
+            shortCuts.add(
+                ShortcutInfo.Builder(context, Const.Nav.DENY)
+                    .setShortLabel(context.getString(R.string.denylist))
+                    .setIntent(
+                        Intent(intent).putExtra(Const.Key.OPEN_SECTION, Const.Nav.DENY)
+                    )
+                    .setIcon(context.getIcon(R.drawable.sc_magiskhide))
+                    .setRank(2)
+                    .build()
+            )
+        }
         if (Info.env.isActive) {
             shortCuts.add(
                 ShortcutInfo.Builder(context, Const.Nav.MODULES)
@@ -84,7 +97,7 @@ object Shortcuts {
                         Intent(intent).putExtra(Const.Key.OPEN_SECTION, Const.Nav.MODULES)
                     )
                     .setIcon(context.getIcon(R.drawable.sc_extension))
-                    .setRank(2)
+                    .setRank(3)
                     .build()
             )
         }

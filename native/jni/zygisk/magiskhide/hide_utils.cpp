@@ -299,7 +299,6 @@ static void inotify_handler(pollfd *pfd) {
     } u{};
     read(pfd->fd, u.buf, sizeof(u.buf));
     if (u.event.name == "packages.xml"sv) {
-        cached_manager_app_id = -1;
         exec_task([] {
             update_uid_map();
         });
@@ -422,13 +421,4 @@ void test_proc_monitor() {
     if (procfp == nullptr && (procfp = opendir("/proc")) == nullptr)
         exit(1);
     proc_monitor();
-}
-
-int check_uid_map(int client) {
-    if (!hide_enabled())
-        return 0;
-
-    int uid = read_int(client);
-    string process = read_string(client);
-    return is_hide_target(uid, process) ? 1 : 0;
 }

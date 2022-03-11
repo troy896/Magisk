@@ -9,10 +9,12 @@
 
 enum : int {
     ZYGISK_SETUP,
+    ZYGISK_CHECK_HIDELIST,
+    ZYGISK_UNMOUNT,
     ZYGISK_GET_INFO,
     ZYGISK_GET_LOG_PIPE,
     ZYGISK_CONNECT_COMPANION,
-    ZYGISK_GET_MODDIR
+    ZYGISK_GET_MODDIR,
 };
 
 #if defined(__LP64__)
@@ -37,8 +39,13 @@ uintptr_t get_function_off(int pid, uintptr_t addr, char *lib);
 // Get function address, given library name + offset
 uintptr_t get_function_addr(int pid, const char *lib, uintptr_t off);
 
+// For injected process to access daemon
+int remote_check_hide(int uid, const char *process);
+int remote_request_hide();
+
 extern void *self_handle;
 
 void unload_first_stage();
 void hook_functions();
 int remote_get_info(int uid, const char *process, uint32_t *flags, std::vector<int> &fds);
+int remote_request_unmount();

@@ -135,6 +135,9 @@ static void poll_ctrl_handler(pollfd *pfd) {
 
 static void handle_request_async(int client, int code, const sock_cred &cred) {
     switch (code) {
+    case DENYLIST:
+        denylist_handler(client, &cred);
+        break;
     case MAGISKHIDE:
         magiskhide_handler(client, &cred);
         break;
@@ -184,6 +187,7 @@ static void handle_request_sync(int client, int code) {
         setup_logfile(true);
         break;
     case STOP_DAEMON:
+        denylist_handler(-1, nullptr);
         magiskhide_handler(-1, nullptr);
         write_int(client, 0);
         // Terminate the daemon!
@@ -235,6 +239,12 @@ static void handle_request(pollfd *pfd) {
     case REMOVE_MODULES:
         if (!is_root && cred.uid != UID_SHELL) {
             write_int(client, 1);
+            goto done;
+        }
+        break;
+    case DENYLIST:
+        if (!is_root) {
+            write_int(client, ROOT_REQUIRED);
             goto done;
         }
         break;

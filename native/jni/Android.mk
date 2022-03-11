@@ -27,10 +27,6 @@ LOCAL_SRC_FILES := \
     core/module.cpp \
     core/logging.cpp \
     core/thread.cpp \
-    magiskhide/magiskhide.cpp \
-    magiskhide/hide_utils.cpp \
-    magiskhide/hide_policy.cpp \
-    magiskhide/proc_monitor.cpp \
     resetprop/persist.cpp \
     resetprop/resetprop.cpp \
     su/su.cpp \
@@ -41,7 +37,14 @@ LOCAL_SRC_FILES := \
     zygisk/main.cpp \
     zygisk/utils.cpp \
     zygisk/hook.cpp \
-    zygisk/memory.cpp
+    zygisk/memory.cpp \
+    zygisk/deny/cli.cpp \
+    zygisk/deny/utils.cpp \
+    zygisk/deny/revert.cpp \
+    zygisk/magiskhide/magiskhide.cpp \
+    zygisk/magiskhide/hide_utils.cpp \
+    zygisk/magiskhide/hide_policy.cpp \
+    zygisk/magiskhide/proc_monitor.cpp
 
 LOCAL_LDLIBS := -llog
 
