@@ -75,6 +75,7 @@ object Const {
     object Nav {
         const val HOME = "home"
         const val SETTINGS = "settings"
+        const val DENY = "deny"
         const val HIDE = "hide"
         const val MODULES = "modules"
         const val SUPERUSER = "superuser"

@@ -135,6 +135,9 @@ static void poll_ctrl_handler(pollfd *pfd) {
 
 static void handle_request_async(int client, int code, const sock_cred &cred) {
     switch (code) {
+    case DENYLIST:
+        denylist_handler(client, &cred);
+        break;
     case MAGISKHIDE:
         magiskhide_handler(client, &cred);
         break;
@@ -184,6 +187,7 @@ static void handle_request_sync(int client, int code) {
         setup_logfile(true);
         break;
     case STOP_DAEMON:
+        denylist_handler(-1, nullptr);
         magiskhide_handler(-1, nullptr);
         write_int(client, 0);
         // Terminate the daemon!
@@ -227,6 +231,8 @@ static void handle_request(pollfd *pfd) {
     case BOOT_COMPLETE:
     case SQLITE_CMD:
     case GET_PATH:
+    case DENYLIST:
+    case STOP_DAEMON:
         if (!is_root) {
             write_int(client, ROOT_REQUIRED);
             goto done;
@@ -238,14 +244,8 @@ static void handle_request(pollfd *pfd) {
             goto done;
         }
         break;
-    case MAGISKHIDE:  // accept hide request from zygote
+    case MAGISKHIDE:
         if (!is_root && !is_zygote) {
-            write_int(client, ROOT_REQUIRED);
-            goto done;
-        }
-        break;
-    case STOP_DAEMON:
-        if (!is_root) {
             write_int(client, ROOT_REQUIRED);
             goto done;
         }

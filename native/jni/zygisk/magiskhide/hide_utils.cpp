@@ -299,11 +299,18 @@ static void inotify_handler(pollfd *pfd) {
     } u{};
     read(pfd->fd, u.buf, sizeof(u.buf));
     if (u.event.name == "packages.xml"sv) {
-        cached_manager_app_id = -1;
         exec_task([] {
             update_uid_map();
         });
     }
+}
+
+static int new_daemon_thread(void(*entry)()) {
+    thread_entry proxy = [](void *entry) -> void * {
+        reinterpret_cast<void(*)()>(entry)();
+        return nullptr;
+    };
+    return new_daemon_thread(proxy, (void *) entry);
 }
 
 int launch_magiskhide(bool late_props) {
@@ -342,6 +349,7 @@ int launch_magiskhide(bool late_props) {
     // Unlock here or else we'll be stuck in deadlock
     lock.unlock();
 
+    LOGI("hide_list: initializing internal data structures\n");
     default_new(uid_proc_map);
     update_uid_map();
 
@@ -422,13 +430,4 @@ void test_proc_monitor() {
     if (procfp == nullptr && (procfp = opendir("/proc")) == nullptr)
         exit(1);
     proc_monitor();
-}
-
-int check_uid_map(int client) {
-    if (!hide_enabled())
-        return 0;
-
-    int uid = read_int(client);
-    string process = read_string(client);
-    return is_hide_target(uid, process) ? 1 : 0;
 }
