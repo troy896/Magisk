@@ -1,0 +1,304 @@
+@import url('https://nyri4.github.io/Couve/betterdiscord/app.css');
+@import url('https://mwittrien.github.io/BetterDiscordAddons/Themes/_res/SettingsIcons.css');
+@import url('https://nyri4.github.io/Discolored/main.css');
+@import url('https://discordstyles.github.io/Fluent/Icons.css');
+/*Small Patches*/
+/*Delete Nitro and Shop pushes by Tropix*/
+.channel_c21703:has([data-list-item-id$="___nitro"]), .channel_c21703:has([data-list-item-id$="___shop"]), /*Shop and nitro private channels*/
+.containerWrapper-1kh54c, /*Userpopout nitro upsell*/
+.premiumTab__57bdc, /*Nitro Settings Tab*/
+.buttons_ce5b56 > button[aria-haspopup="dialog"], /*Gift Button*/
+.premiumFeatureBorder__9bbb3, /*Premium settings feature upsell cards.*/
+.container_d6bff4:has(.ctaButton__7d20c), /*Shop advertisement*/
+.premiumTrialBadge_f2180d {
+    display: none;
+}
+.sidebar_ded4b5:has(.privateChannelsHeaderContainer_ddcec6) .privateChannelsHeaderContainer_ddcec6{
+    margin-top: -10px;
+}
+/*User modal Adjusments*/
+.root_a28985 .tabBarContainer__63f55{
+    padding: 16px;
+}
+/*Color Corrections*/
+.theme-dark .container_ca50b9{
+    background: var(--background-secondary);
+}
+.selected_d94cf9{
+    background: var(--background-primary)!important;
+}
+.modeSelected__487d6 .link__95dc0, .modeSelected__487d6 .link__95dc0 {
+    background: var(--background-primary);
+}
+.wrapper__7bcde{
+    background-color: var(--background-secondary);
+    transition: background-color 0.3s ease;
+}
+.wrapper__7bcde :hover{
+    background-color: #1a523f;
+    border-radius: 5px;
+}
+.channel_c21703{
+    background-color: var(--background-secondary);
+    transition: background-color 0.3s ease;
+}
+.channel_c21703 :hover{
+    background-color:  #1a523f;
+    border-radius: 10px;
+}
+:root .membersWrap__90226 .members__9f47b .member_aa4760 {
+    background-color: var(--background-secondary);
+    transition: background-color 0.3s ease;
+}
+:root .membersWrap__90226 .members__9f47b .member_aa4760 :hover{
+    background-color: #1a523f;
+    border-radius: 10px;
+}
+:root .peopleListItem_d14722{
+    background: transparent;
+    border-radius: 10px;
+    transition:0.3s ease-in-out;
+}
+:root .peopleListItem_d14722:hover{
+    background: linear-gradient(0.4turn,var(--main-color), #1a523f);
+}
+
+/*Fullscreen Settings +some corrections by ME*/
+:root .layer__2efaa:not(.baseLayer__8fda3) {
+    margin-left: 0px;
+}
+.platform-win .appMount_fae9dd .app_b1f720 .scroller__3d071{
+    padding-top: 35px;
+}
+.platform-win .layers_a23c37, .platform-win .layers__1c917, .platform-win .layers_a23c37 > .layer__2efaa, .platform-win .container__037ed{
+    overflow: hidden;
+}
+.platform-win .standardSidebarView__1129a{
+    top: -22px;
+}
+:root .layer__2efaa .toolsContainer_f5d55d{
+    right: -12px;
+}
+:root .layer__2efaa .contentColumn_dc7d36, :root .layer__2efaa .customColumn_e22a6e{
+    max-width: 98%;
+}
+:root .header__104ca{
+    padding: 12px 25px 12px 25px;
+}
+.listItemContents__7c940 .userInfo__18240 .wrapper_edb6e0{
+    translate: 0px 3.5px;
+}
+/*Improved Links by https://github.com/Riddim-GLiTCH no edits made*/
+:root [class^=message_] [class^=contents_] [class^=anchor_], [class^=message_] [class^=repliedMessage_] [class^=anchor_], [class^=message_] [class^=modal] [class^=anchor_], [class^=message_] [class^=topic_] [class^=anchor_], [class^=focusLock] [class^=contents_] [class^=anchor_], [class^=focusLock] [class^=repliedMessage_] [class^=anchor_], [class^=focusLock] [class^=modal] [class^=anchor_], [class^=focusLock] [class^=topic_] [class^=anchor_], [class^=title] [class^=contents_] [class^=anchor_], [class^=title] [class^=repliedMessage_] [class^=anchor_], [class^=title] [class^=modal] [class^=anchor_], [class^=title] [class^=topic_] [class^=anchor_] {
+  transition: background-color 50ms ease-out, color 50ms ease-out;
+  color: var(--mention-foreground);
+  background-color: var(--mention-background);
+  padding: 1px 2px;
+  border-radius: 3px;
+  border-bottom: 1px solid var(--brand-700);
+}
+:root [class^=message_] [class^=contents_] [class^=anchor_]::before, [class^=message_] [class^=repliedMessage_] [class^=anchor_]::before, [class^=message_] [class^=modal] [class^=anchor_]::before, [class^=message_] [class^=topic_] [class^=anchor_]::before, [class^=focusLock] [class^=contents_] [class^=anchor_]::before, [class^=focusLock] [class^=repliedMessage_] [class^=anchor_]::before, [class^=focusLock] [class^=modal] [class^=anchor_]::before, [class^=focusLock] [class^=topic_] [class^=anchor_]::before, [class^=title] [class^=contents_] [class^=anchor_]::before, [class^=title] [class^=repliedMessage_] [class^=anchor_]::before, [class^=title] [class^=modal] [class^=anchor_]::before, [class^=title] [class^=topic_] [class^=anchor_]::before {
+  content: "🔗";
+  margin-right: 2px;
+  filter: saturate(0%);
+  font-size: small;
+}
+:root [class^=message_] [class^=contents_] [class^=anchor_]:hover, [class^=message_] [class^=repliedMessage_] [class^=anchor_]:hover, [class^=message_] [class^=modal] [class^=anchor_]:hover, [class^=message_] [class^=topic_] [class^=anchor_]:hover, [class^=focusLock] [class^=contents_] [class^=anchor_]:hover, [class^=focusLock] [class^=repliedMessage_] [class^=anchor_]:hover, [class^=focusLock] [class^=modal] [class^=anchor_]:hover, [class^=focusLock] [class^=topic_] [class^=anchor_]:hover, [class^=title] [class^=contents_] [class^=anchor_]:hover, [class^=title] [class^=repliedMessage_] [class^=anchor_]:hover, [class^=title] [class^=modal] [class^=anchor_]:hover, [class^=title] [class^=topic_] [class^=anchor_]:hover {
+  background-color: var(--brand-experiment);
+}
+:root .anchor_c8ddc0[title$=")"]:after {
+  font-size: 0.7rem;
+  content: " (" attr(href) ")";
+  filter: grayscale(0.5);
+}
+
+/*Prettier Input Bar by https://github.com/Riddim-GLiTCH minor edits made to fit*/
+[class^=channelTextArea_] [class^=buttons_]::before,
+[class^=channelTextArea_] [class^=buttons_]::after /* Adds a new button to the text area */ {
+  content: "≡";
+  font-size: 2rem;
+  scale: 1;
+  color: var(--interactive-normal);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 100%;
+  height: 100%;
+  transition: scale 0.3s 0.1s ease-in-out;
+}
+[class^=channelTextArea_] [class^=buttons_]::after /* Makes the 'after' field invisible. There is an 'after' to prevent jitteriness. */ {
+  color: transparent;
+}
+[class^=channelTextArea_] [class^=buttons_] /* Hide all buttons except for the hover button */ {
+  transition: all ease-in-out 0.3s;
+  translate: calc(100% - 8px);
+  padding-bottom: 0px;
+  padding-left: 20px;
+}
+[class^=channelTextArea_] [class^=buttons_] [class^=button_] /* Adjust the width and visibility of the buttons for a smoother transition */ {
+  transition: all ease-in-out 0.3s;
+  width: 10;
+  opacity: 0;
+}
+[class^=channelTextArea_] [class^=buttons_]:hover /* Reveal all buttons on hover */ {
+  translate: 0%;
+  padding-left: 0px !important;
+}
+[class^=channelTextArea_] [class^=buttons_]:hover [class^=button_] /* Adjust the width and visibility of the buttons to make them actually visible */ {
+  transition: all ease-in-out 0.5s;
+  width: unset;
+  opacity: 1;
+}
+[class^=channelTextArea_] [class^=buttons_]:hover::before /* Hide the hover button on hover */ {
+  margin-right: 8px;
+  scale: 0 1;
+}
+/*Improved User Area by https://github.com/Riddim-GLiTCH minor edits made to fit*/
+
+    /* Adds an @ to the username. Discord, for the love of god, just add this yourself already. */
+.container_ca50b9 .hovered__243e5::before{
+  content: "@";
+}
+
+    /* Credit to @thecommieaxolotl for this code. */
+    /* --Hides User Buttons until Hover-- */
+    /* Hide mute and deafen buttons */
+.panels__58331 > .container_ca50b9 .flex_f5fbb7 > :not(:last-child) {
+  opacity: 0% !important;
+  width: 0px;
+  transition: all 0.3s ease-in-out;
+}
+    /* Reveal mute and Deafen buttons when settings button is hovered */
+.panels__58331 > .container_ca50b9 .flex_f5fbb7:hover > :not(:last-child) {
+  opacity: 100% !important;
+  width: 32px;
+}
+    /* Resize and move the profile button to take up all the space it can to look clean. */
+.avatarWrapper_ba5175{
+  transition: all 0.3s ease-in-out;
+  width: 100%!important;
+  margin-left: 0px;
+  height: 53px;
+  border-radius: 0!important;
+}
+
+/*Small Member list by Riddim Glitch*/
+.container_b2ce9c {
+  transition: 0.3s ease-in-out;
+  margin-right: -180px;
+}
+.container_b2ce9c .membersGroup__85843 {
+  transition: 0.3s ease-in-out;
+  height: 0px!important;
+  margin-top: -25px;
+}
+.container_b2ce9c:hover .membersGroup__85843 {
+  height: unset!important;
+  margin-top: unset!important;
+}
+.container_b2ce9c:hover{
+  margin-right: unset!important;
+}
+:root .container__11d72.title_b7d661:not(.minimum_ebf000){
+	background:var(--background-secondary);
+	width: calc(100% - 60px);
+	padding-right: 165px;
+}
+:root .membersWrap__90226 .members__9f47b .member_aa4760 .layout_bb8e67{
+  padding-left: 16px;
+}
+
+/*Couve Home Button by Nyria*/
+.childWrapper__01b9c { background:url('https://nyri4.github.io/Couve/assets/icon.png') center/cover no-repeat !important; scale: 1.5;}
+.childWrapper__01b9c > svg { display: none;}
+
+/*Couve Extra Gradients stolen by GravefulLion(origional link no worky) Updated and changed by me*/
+.progressBar_db0972, .guildSeparator_dcb3cc  {
+    background: linear-gradient(to right, #419e85, #009697, #008ba9, #007db6, #116cb6) !important;
+}
+/*by GracefulLion updated by me*/
+.actions-1mkm4H [role="switch"][aria-checked="true"] .text-sm-bold-2BCfqW {
+  color: var(--main-color) !important;
+}
+.mentionIcon__27172, .text-sm-bold__33e9d {
+  color: var(--main-color) !important;
+}
+/*add hover colors to everything by HereToHelp updated by me*/
+:root .lookFilled__19298.colorBrand_b2253e:hover {
+  background: #2e8568 !important;
+  background-color: #2e8568 !important;
+}
+
+/*Gradient starts at colour two due to how Discord handles channel lists.*/
+.theme-dark {
+  --colour-1: #419E85;
+  --colour-2: #3EC3A4;
+  --colour-3: #0BB494;
+  --colour-4: #BBF49B;
+  --colour-5: #9CE69D;
+  --colour-6: #6FD7A3;
+  --colour-7: #9CE69D;
+  --colour-8: #BBF49B;
+  --colour-9: #0BB494;
+  --colour-10: #3EC3A4;
+  }
+
+/*Slide in Messages*/
+
+/* Channel hover and click animation */
+
+/* Member hover animation */
+
+/* Server hover animation */
+
+/* Top and Bottom Bars*/
+/*Bottom*/
+
+/*Top*/
+
+/* Userbg patch for couve */
+
+/* Skinnier server list*/
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 {
+  position: fixed;
+  bottom: 26.5px;
+  left: 327.5px;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  min-width: unset !important;
+}
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 > .avatar_b2ca13 {
+  width: 40px !important;
+  height: 40px !important;
+}
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 > .avatar_b2ca13 > svg {
+  contain: unset;
+}
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 > .avatar_b2ca13 foreignObject {
+  width: 100% !important;
+  height: 100% !important;
+}
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 > .avatar_b2ca13:hover {
+  opacity: 1;
+}
+:root .panels_a4d4d9 > .container_b2ca13 > .avatarWrapper_b2ca13 > .avatar_b2ca13 + .nameTag_b2ca13 {
+  display: none;
+}
+/*Role tint in chat by Nyria*/
+.cozy_f5c119 .headerText_f47574 > .username_d30d99::before {
+  content: ''; 
+  width: calc(100% + 10px); 
+  height: 100%;
+  border-radius: 5px;
+  background-color: currentColor; 
+  opacity: 0.2; 
+  position: absolute; 
+  top: 0; 
+  z-index: -1;
+  left: -5px;
+}
+.cozy_f5c119 .headerText_f47574 > .username_d30d99 {
+  margin-left: 5px;
+}
+
